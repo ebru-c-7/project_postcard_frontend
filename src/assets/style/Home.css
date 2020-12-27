@@ -1,0 +1,52 @@
+#home-img2 {
+  position: absolute;
+  width: 35%;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+}
+
+#home-signbox-container {
+  position: absolute;
+  top: 8%;
+  left: 1%;
+  background: white;
+  padding: 15px;
+  width: 30%;
+  min-width: 230px;
+  background-color: #c7d9e29c;
+}
+
+#home-signbox-container .form-label {
+  font-weight: bold;
+}
+
+.form-logo {
+  width: 40px;
+  position: relative;
+  left: -25px;
+  filter: grayscale(1);
+}
+
+@media(max-width: 680px) {
+  #home-signbox-container {
+    position: relative;
+    top: 10px;
+    width: 65vw;
+    margin: 0 auto;
+    min-width: none;
+  }
+}
+
+@media(max-width: 380px) {
+  #home-signbox-container {
+    width: 95vw;
+  }
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.4rem;
+}
+

@@ -1,0 +1,8 @@
+.logo-svg {
+    width: 1rem;
+}
+
+.table-hover tbody tr:hover {
+    color: #fff9f9 !important;
+    background-color: rgb(143 56 50 / 82%) !important;
+}

@@ -1,0 +1,75 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Euphoria+Script&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap');
+
+.CardImage {
+    display: block;
+    width: 70%;
+    min-width: 40vw;
+    max-width: 30rem;
+    margin: 0 auto;
+    margin-top: 2rem;
+}
+
+.CardButton {
+    margin: 12px;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    background-color: #633e32;
+    border: none;
+}
+
+.CardButton:hover {
+    background-color: #57372d;
+    border: none;
+}
+
+.CardButton:focus {
+    background-color: #633e32;
+    border: 2px solid black;
+    box-shadow: none;
+}
+
+.CardButton:active {
+    background-color: #633e32 !important;
+    border: 2px solid black !important;
+    box-shadow: none !important;
+}
+
+.CardContainer {
+    min-height: 50vh;
+    max-height: 30rem;
+    border: 2px solid #898282cc;
+    border-radius: 3%;
+    box-shadow: inset #3b0f0fd1 1px 1px 15px 3px;
+    overflow: auto;
+    /* font-family: 'Euphoria Script', cursive; */
+    font-family: 'Gochi Hand', cursive;
+    font-size: 1.4rem;
+    width: 95%;
+    /* min-width: 40rem; */
+    max-width: 50rem;
+    margin: auto;
+    margin-top: 2rem;
+}
+
+.CardTextCol {
+    text-align: justify;
+    margin: 1.2rem;
+}
+
+.CardTextCol p {
+    text-transform: lowercase;
+}
+
+.StampImg {
+    max-width: 6rem;
+    margin: 2rem;
+}
+
+/* @media (max-width: 750px ) {
+    .CardContainer__Row {
+        flex-direction: column;
+        width: 100%;
+    }
+} */

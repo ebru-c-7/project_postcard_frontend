@@ -1,0 +1,8 @@
+#navbar-logo {
+    filter: drop-shadow(2px 4px 6px black);
+}
+
+#btn-logout {
+    background: none;
+    border: none;
+}
