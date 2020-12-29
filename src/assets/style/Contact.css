@@ -6,3 +6,10 @@
     color: #fff9f9 !important;
     background-color: rgb(143 56 50 / 82%) !important;
 }
+
+@media(max-width: 515px) {
+    tr {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+}

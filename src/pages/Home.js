@@ -12,7 +12,7 @@ const Home = (props) => {
   return (
     <div style={{ position: "relative", height: "50vh" }}>
       <div style={{ position: "relative" }}>
-        <Image id="home-img1" src={houseImg} fluid />
+        <Image style={{width: "100vw"}} id="home-img1" src={houseImg} fluid />
         <Image id="home-img2" src={postboxImg} />
       </div>
       <div id="home-signbox-container">

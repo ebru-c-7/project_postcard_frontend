@@ -20,7 +20,8 @@ const PublicCard = (props) => {
       try {
         response = await axios.get(url);
       } catch (err) {
-        setError(err);
+        setError(err.response.data.message || "Something went wrong!");
+        return;
       }
       let card = response.data.card;
       setCardFront(card.image);
@@ -41,7 +42,10 @@ const PublicCard = (props) => {
     <React.Fragment>
       <ErrorModal
         show={!!error}
-        onHide={() => setError(null)}
+        onHide={() => {
+          setError(null);
+          props.history.push("/");
+      }}
         errorMessage={error}
       />
       {cardFront && cardBack ? (

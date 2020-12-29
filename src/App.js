@@ -45,7 +45,7 @@ class App extends Component {
     );
 
     return (
-      <Suspense fallback={<h1>Loading…</h1>}>
+      <Suspense fallback={<p>Loading…</p>}>
         <div className="App">
           <ErrorModal
             show={!!this.props.error}
