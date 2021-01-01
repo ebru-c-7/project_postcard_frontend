@@ -33,7 +33,7 @@ const MessageBox = (props) => {
         <strong className="mr-auto">What's Happening</strong>
         <small>just now</small>
       </Toast.Header>
-      <Toast.Body style={{ textAlign: "left" }}>{props.message}</Toast.Body>
+      <Toast.Body style={{ textAlign: "left", fontSize:"1rem" }}>{props.message}</Toast.Body>
     </Toast>
   );
 };

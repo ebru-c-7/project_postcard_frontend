@@ -7,16 +7,13 @@ import Form from "react-bootstrap/Form";
 import ContactBook from "./ContactBook";
 
 const ContactModule = (props) => {
-  const handleClose = () => {
-    props.hide();
-  };
+  const handleClose = () => props.hide();
 
   const contactSelectHandler = (event) => {
     event.preventDefault();
-    // event.stopPropagation();
+    event.stopPropagation();
     let form = event.currentTarget;
     let contactEmail = form["contact"].value;
-    console.log(contactEmail);
     props.selectHandler(contactEmail);
   };
 
@@ -27,7 +24,11 @@ const ContactModule = (props) => {
       </Modal.Header>
       <Form onSubmit={contactSelectHandler}>
         <Modal.Body>
-          <p>Please select a contact from your contact book below.</p>
+          {props.contactList.length === 0 ? (
+            <p>Please add some contact first!</p>
+          ) : (
+            <p>Please select a contact from your contact book below.</p>
+          )}
           <fieldset>
             <ContactBook data={props.contactList} />
           </fieldset>
@@ -36,7 +37,11 @@ const ContactModule = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit">
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={props.contactList.length === 0}
+          >
             Select
           </Button>
         </Modal.Footer>

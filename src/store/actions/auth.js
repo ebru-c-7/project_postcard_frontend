@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import * as actions from "./actionTypes";
 import axios from "axios";
 
@@ -6,13 +5,13 @@ const authStart = () => ({ type: actions.AUTH_START });
 
 const authFail = (error) => ({ type: actions.AUTH_FAIL, error });
 
-const authSuccess = ({ token, name }) => ({
+const authSuccess = (token, name) => ({
   type: actions.AUTH_SUCCESS,
   token,
   username: name,
 });
 
-export const autoLogout = (expTime) => {
+const autoLogout = (expTime) => {
   return (dispatch) => {
     setTimeout(() => {
       dispatch(logout());
@@ -36,26 +35,28 @@ export const login = (email, password) => {
       email,
       password,
     };
-    console.log(loginData);
     const url = `${process.env.REACT_APP_BACKEND_URL}/user/login`;
     axios
       .post(url, loginData)
       .then((response) => {
-        console.log(response);
         const duration = 3600000; //1hr in ms
         const expiration = new Date(new Date().getTime() + duration);
-        const token = response.data.token;
-        const name = response.data.name;
+        const { token, name } = response.data;
         localStorage.setItem("token", token);
         localStorage.setItem("expIn", expiration);
         localStorage.setItem("username", name);
-        dispatch(authSuccess({token, name}));
+        dispatch(authSuccess(token, name));
         dispatch(autoLogout(duration));
       })
       .catch((error) => {
-        dispatch(authFail(error.response.data.message));
+        dispatch(
+          authFail(
+            error.response.data.message ||
+              "Something went wrong :( Please refresh the page!"
+          )
+        );
       });
-    }
+  };
 };
 
 export const signup = (email, password, name) => {
@@ -64,24 +65,28 @@ export const signup = (email, password, name) => {
     const signupData = {
       email,
       password,
-      name
+      name,
     };
-    console.log(signupData);
     const url = `${process.env.REACT_APP_BACKEND_URL}/user/signup`;
     axios
       .put(url, signupData)
       .then((response) => {
-        console.log(response);
         const duration = 3600000; //1hr in ms
         const expiration = new Date(new Date().getTime() + duration);
-        localStorage.setItem("token", response.data.token);
+        let { token, name } = response.data;
+        localStorage.setItem("token", token);
         localStorage.setItem("expIn", expiration);
-        localStorage.setItem("username", response.data.name);
-        dispatch(authSuccess(response.data)); //data object with token and username properties
+        localStorage.setItem("username", name);
+        dispatch(authSuccess(token, name));
         dispatch(autoLogout(duration));
       })
       .catch((error) => {
-        dispatch(authFail(error.response.data.message));
+        dispatch(
+          authFail(
+            error.response.data.message ||
+              "Something went wrong :( Please refresh the page!"
+          )
+        );
       });
   };
 };
@@ -97,9 +102,8 @@ export const autoLogin = () => {
         dispatch(logout());
       } else {
         const name = localStorage.getItem("username");
-        const data = {token, name}
-        dispatch(authSuccess(data));
-        dispatch(autoLogout(time.getTime()-new Date().getTime())); //in ms
+        dispatch(authSuccess(token, name));
+        dispatch(autoLogout(time.getTime() - new Date().getTime())); //in ms
       }
     }
   };

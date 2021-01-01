@@ -20,10 +20,11 @@ class FormItem extends Component {
   };
 
   validityHandler = (event) => {
-    const form = event.currentTarget;
     event.preventDefault();
     event.stopPropagation();
+    const form = event.currentTarget;
     this.setState({ validated: true });
+    
     if (this.props.mode === "card") {
       if (
         form.checkValidity() === false ||
@@ -32,27 +33,25 @@ class FormItem extends Component {
       ) {
         return;
       }
-      this.setState({ imgFile: null, validated: false });
+      // this.setState({ validated: false });
     } else if (this.props.mode === "contact") {
       if (form.checkValidity() === false) {
         return;
       }
     }
-    // window.location.reload(false);
     this.submitHandler(event);
   };
 
   submitHandler = (event) => {
     let form = event.currentTarget;
+    
     if (this.props.mode === "contact") {
       const newContact = {
         name: form["name"].value,
         email: form["email"].value,
         note: form["note"].value,
       };
-      console.log(newContact);
       if (this.props.selectedContact) {
-        console.log("new contact:", newContact);
         this.props.onEditContact(
           this.props.token,
           this.props.selectedContact.id,
@@ -62,7 +61,6 @@ class FormItem extends Component {
         this.props.onAddContact(this.props.token, newContact);
       }
     } else if (this.props.mode === "card") {
-      console.log(form, form["body"].value);
       const newCard = {
         image: this.state.imgFile,
         contactEmail: this.props.selectedContactCard,
@@ -71,16 +69,14 @@ class FormItem extends Component {
         end: form["end"].value,
         type: form["type"].checked,
       };
-      console.log("newCard", newCard);
       this.props.onAddCard(this.props.token, newCard);
     }
+
     event.target.reset();
-    this.setState({ validated: false });
+    this.setState({ validated: false, imgFile: null });
   };
 
-  contactButtonHandler = () => {
-    this.props.fetchContactsHandler();
-  };
+  contactButtonHandler = () => this.props.fetchContactsHandler();
 
   render() {
     const imageModule = this.props.imgElement && this.props.mode === "card" && (
@@ -113,7 +109,7 @@ class FormItem extends Component {
             noValidate
             validated={this.state.validated}
             onSubmit={this.validityHandler}
-            // action="POST"
+            className="formFlex"
           >
             {this.props.data.map((item, i) => (
               <FormGroupItem key={i} data={item} />
@@ -144,23 +140,20 @@ class FormItem extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    contactList: state.contact.contactList,
     token: state.auth.token,
     isContactsLoading: state.contact.loading,
     selectedContactCard: state.card.selectedContact,
     selectedContact: state.contact.selectedContact,
-    isContactsLoaded: state.contact.loaded,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchContacts: (token) => dispatch(actions.fetchContacts(token)),
-    onAddContact: (token, contact) =>
-      dispatch(actions.addContact(token, contact)),
-    onAddCard: (token, card) => dispatch(actions.addCard(token, card)),
     onEditContact: (token, id, contact) =>
       dispatch(actions.editContact(token, id, contact)),
+      onAddContact: (token, contact) =>
+      dispatch(actions.addContact(token, contact)),
+    onAddCard: (token, card) => dispatch(actions.addCard(token, card)),
   };
 };
 

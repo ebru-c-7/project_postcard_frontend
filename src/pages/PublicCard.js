@@ -11,20 +11,24 @@ const PublicCard = (props) => {
 
   useEffect(() => {
     const fetchCard = async () => {
-      console.log("params", props.match.params);
       const cardId = props.match.params.card;
       const contactId = props.match.params.contact;
       const url = `${process.env.REACT_APP_BACKEND_URL}/card/${cardId}/${contactId}`;
-      let response;
 
+      let card;
       try {
-        response = await axios.get(url);
+        let response = await axios.get(url);
+        card = response.data.card;
       } catch (err) {
-        setError(err.response.data.message || "Something went wrong!");
+        setError(
+          err.response.data.message ||
+            "Something went wrong :( Please refresh the page!"
+        );
         return;
       }
-      let card = response.data.card;
-      setCardFront(card.image);
+
+      setCardFront(card.image || "");
+
       let cardBack = {};
       for (let key in card) {
         if (key !== "image") {
@@ -33,9 +37,8 @@ const PublicCard = (props) => {
       }
       setCardBack(cardBack);
     };
-      fetchCard();
-    console.log("useeffect", cardBack);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchCard();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -45,7 +48,7 @@ const PublicCard = (props) => {
         onHide={() => {
           setError(null);
           props.history.push("/");
-      }}
+        }}
         errorMessage={error}
       />
       {cardFront && cardBack ? (

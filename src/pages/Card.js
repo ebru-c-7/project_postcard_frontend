@@ -25,7 +25,7 @@ class Card extends Component {
         placeholder: "Fx, Dear Sam",
         required: true,
         feedback: "Should not be empty",
-        maxLength: "15",
+        maxLength: "16",
       },
       {
         label: "Body",
@@ -36,7 +36,7 @@ class Card extends Component {
         feedback: "Should not be empty",
         as: "textarea",
         rows: "4",
-        maxLength: "250",
+        maxLength: "251",
       },
       {
         label: "End",
@@ -45,7 +45,7 @@ class Card extends Component {
         placeholder: "Fx, Love Frannie",
         required: true,
         feedback: "Should not be empty",
-        maxLength: "25",
+        maxLength: "26",
       },
       {
         label: "Send now",
@@ -58,8 +58,7 @@ class Card extends Component {
 
   componentDidMount() {
     if (!this.props.isLoaded) {
-      console.log("componentdidmount", this.props.token);
-      this.props.onFetchCards(this.props.token);
+      this.props.onFetchCards(this.props.token, true);
     }
   }
 
@@ -67,21 +66,11 @@ class Card extends Component {
     this.props.onChangeFailCard();
   }
 
-  showContactModalHandler = () => {
-    this.setState({ showContactModule: true });
-  };
+  showContactModalHandler = () => this.setState({ showContactModule: true });
 
-  closeContactModalHandler = () => {
-    this.setState({ showContactModule: false });
-    // if (this.props.selectedContact) {
-    //   this.props.onCancelSelectCardContact();
-    // }
-  };
+  closeContactModalHandler = () => this.setState({ showContactModule: false });
 
-  deleteCardHandler = (cardId) => {
-    console.log("delete for ", cardId);
-    this.props.onDeleteCard(this.props.token, cardId);
-  };
+  deleteCardHandler = (cardId) => this.props.onDeleteCard(this.props.token, cardId);
 
   fetchContactsHandler = () => {
     if (!this.props.isContactsLoaded) {
@@ -95,9 +84,11 @@ class Card extends Component {
     this.setState({ showContactModule: false });
   };
 
-  sendCardHandler = (cardId) => {
-    console.log("cardId: ", cardId);
-    this.props.onSendSavedCard(this.props.token, cardId);
+  sendCardHandler = (cardId) => this.props.onSendSavedCard(this.props.token, cardId);
+
+  fetchMoreCards = (type) => {
+    const length = this.props.cardList.filter((el) => el.type === type).length;
+    this.props.onFetchCards(this.props.token, false, length, type);
   };
 
   render() {
@@ -114,7 +105,6 @@ class Card extends Component {
     );
 
     let savedCardsList = this.props.cardList.filter((el) => el.type === false);
-
     let savedCards = (
       <CardItem
         id="saved-cards-container"
@@ -122,17 +112,18 @@ class Card extends Component {
         methods={{
           deleteHandler: this.deleteCardHandler,
           sendCardHandler: this.sendCardHandler,
+          fetchMoreCards: this.fetchMoreCards.bind(this, false),
         }}
         type={false}
       />
     );
     let sentCardsList = this.props.cardList.filter((el) => el.type === true);
-
     let sentCards = (
       <CardItem
         id="sent-cards-container"
         methods={{
           deleteHandler: this.deleteCardHandler,
+          fetchMoreCards: this.fetchMoreCards.bind(this, true),
         }}
         cards={sentCardsList}
         type={true}
@@ -205,20 +196,18 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchCards: (token) => dispatch(actions.fetchCards(token)),
-    onAddCard: (card) => dispatch(actions.addCard(card)),
+    onFetchCards: (token, isReload, length, type) =>
+      dispatch(actions.fetchCards(token, isReload, length, type)),
+    onChangeFailCard: () => dispatch(actions.changeFailCard()),
     onDeleteCard: (token, cardId) =>
       dispatch(actions.deleteCard(token, cardId)),
-    onMessageHandle: () => dispatch(actions.messageHandleCard()),
     onFetchContacts: (token) => dispatch(actions.fetchContacts(token)),
-    onSendSavedCard: (token, cardId) =>
-      dispatch(actions.sendSavedCard(token, cardId)),
     onSelectCardContact: (email) => dispatch(actions.selectCardContact(email)),
-    onCancelSelectCardContact: () =>
-      dispatch(actions.cancelSelectCardContact()),
+    onSendSavedCard: (token, cardId) =>
+    dispatch(actions.sendSavedCard(token, cardId)),
+    onMessageHandle: () => dispatch(actions.messageHandleCard()),
     onErrorHandle: () => dispatch(actions.errorHandleCard()),
     onErrorHandleContact: () => dispatch(actions.errorHandleContact()),
-    onChangeFailCard: () => dispatch(actions.changeFailCard()),
   };
 };
 

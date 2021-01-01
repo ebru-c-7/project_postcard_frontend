@@ -16,16 +16,16 @@ class SignBox extends Component {
     mode: SIGN_UP,
   };
 
-  modeToggleHandler = (event) => {
+  modeToggleHandler = () => {
     const prevMode = this.state.mode;
     const newMode = prevMode === SIGN_UP ? LOG_IN : SIGN_UP;
     this.setState({ mode: newMode });
   };
 
   validityHandler = (event) => {
-    const form = event.currentTarget;
     event.preventDefault();
     event.stopPropagation();
+    const form = event.currentTarget;
     this.setState({ validated: true });
     if (form.checkValidity() === false) {
       return;
@@ -36,7 +36,6 @@ class SignBox extends Component {
   submitHandler = (form) => {
     const email = form["email"].value;
     const password = form["password"].value;
-    console.log(email, password);
     if (this.state.mode === SIGN_UP) {
       const username = form["username"].value;
       this.props.onSignUp(email, password, username);
@@ -56,7 +55,7 @@ class SignBox extends Component {
             type="text"
             placeholder="Choose username"
             required
-            minLength="4"
+            minLength="5"
           />
           <Form.Control.Feedback type="invalid">
             Please choose a username with min 5 chars.
@@ -71,10 +70,9 @@ class SignBox extends Component {
         noValidate
         validated={this.state.validated}
         onSubmit={this.validityHandler}
-        action="POST"
       >
         <header>
-          <img className="form-logo" src={owlImg} alt="form logo" />
+          <img className="form-logo" src={owlImg} alt="owl logo" />
           <h4 style={{ display: "inline-block" }}>{this.props.children}</h4>
         </header>
         {userName}

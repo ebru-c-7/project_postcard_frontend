@@ -41,8 +41,9 @@ const NavBar = (props) => {
       </Nav.Link>
     </React.Fragment>
   ) : null;
+
   return (
-    <Navbar expand="md">
+    <Navbar expand="sm">
       <Navbar.Brand href="/">
         <Image
           id="navbar-logo"

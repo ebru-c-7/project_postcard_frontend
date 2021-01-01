@@ -63,3 +63,13 @@
         text-align: center !important;
     }
 }
+
+.formFlex {
+    display: flex;
+    flex-direction: column;
+}
+
+.formFlex>button {
+    width: fit-content;
+    align-self: center;
+}

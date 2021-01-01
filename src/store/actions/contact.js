@@ -52,18 +52,21 @@ export const fetchContacts = (token) => {
     axios
       .get(url, { headers })
       .then((response) => {
-        console.log(response);
         const contacts = response.data.contacts;
         dispatch(fetchSuccess(contacts));
       })
       .catch((error) => {
-        dispatch(fetchFail(error.response.data.message));
+        dispatch(
+          fetchFail(
+            error.response.data.message ||
+              "Something went wrong:( Please refresh the page!"
+          )
+        );
       });
   };
 };
 
 export const fetchContact = (token, contactId) => {
-  console.log(token, contactId);
   return (dispatch) => {
     dispatch(fetchStart());
     const url = `${process.env.REACT_APP_BACKEND_URL}/contact/`;
@@ -73,12 +76,16 @@ export const fetchContact = (token, contactId) => {
     axios
       .get(url + params, { headers })
       .then((response) => {
-        console.log(response);
         const contact = response.data.contact;
         dispatch(fetchOneSuccess(contact));
       })
       .catch((error) => {
-        dispatch(fetchFail(error.response.data.message));
+        dispatch(
+          fetchFail(
+            error.response.data.message ||
+              "Something went wrong:( Please refresh the page!"
+          )
+        );
       });
   };
 };
@@ -93,13 +100,16 @@ export const addContact = (token, contact) => {
     axios
       .post(url, body, { headers })
       .then((response) => {
-        console.log(response);
-        const contact = response.data.contact;
-        const message = response.data.message;
+        let { contact, message } = response.data;
         dispatch(addSuccess(contact, message));
       })
       .catch((error) => {
-        dispatch(changeFail(error.response.data.message));
+        dispatch(
+          changeFail(
+            error.response.data.message ||
+              "Something went wrong :( Please refresh the page!"
+          )
+        );
       });
   };
 };
@@ -115,13 +125,16 @@ export const editContact = (token, contactId, contact) => {
     axios
       .patch(url + params, body, { headers })
       .then((response) => {
-        console.log(response);
-        const contact = response.data.contact;
-        const message = response.data.message;
+        let { contact, message } = response.data;
         dispatch(editSuccess(contact, message));
       })
       .catch((error) => {
-        dispatch(changeFail(error.response.data.message));
+        dispatch(
+          changeFail(
+            error.response.data.message ||
+              "Something went wrong :( Please refresh the page!"
+          )
+        );
       });
   };
 };
@@ -136,12 +149,16 @@ export const deleteContact = (token, contactId) => {
     axios
       .delete(url + params, { headers })
       .then((response) => {
-        console.log(response);
         const message = response.data.message;
         dispatch(deleteSuccess(contactId, message));
       })
       .catch((error) => {
-        dispatch(changeFail(error.response.data.message));
+        dispatch(
+          changeFail(
+            error.response.data.message ||
+              "Something went wrong:( Please refresh the page!"
+          )
+        );
       });
   };
 };

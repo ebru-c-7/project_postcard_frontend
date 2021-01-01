@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 
 const FormGroupItem = (props) => {
   let styleLabel = { textAlign: "right", fontWeight: "bold" };
+  
   let control = (
     <Form.Control
       style={{ textTransform: "lowercase" }}
@@ -48,10 +49,10 @@ const FormGroupItem = (props) => {
 
   return (
     <Form.Group as={Row} key={props.data.name}>
-      <Form.Label style={styleLabel} column md={4} lg={3}>
+      <Form.Label style={styleLabel} column md={4} lg={4}>
         {props.data.label}
       </Form.Label>
-      <Col md={7} lg={6}>
+      <Col md={7} lg={7}>
         {control}
         <Form.Control.Feedback type="invalid">
           {props.data.feedback}

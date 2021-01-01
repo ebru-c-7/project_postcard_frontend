@@ -31,10 +31,10 @@ const reducer = (state = initialState, action) => {
       return selectContactSuccess(state, action);
     case actions.CANCEL_SELECT_CARD_CONTACT:
       return selectContactFail(state, action);
+      case actions.SEND_CARD_SUCCESS:
+        return sendSuccess(state, action);
     case actions.ERROR_HANDLE:
       return errorHandle(state, action);
-    case actions.SEND_CARD_SUCCESS:
-      return sendSuccess(state, action);
     case actions.MESSAGE_HANDLE:
       return messageHandle(state, action);
     default:
@@ -44,47 +44,6 @@ const reducer = (state = initialState, action) => {
 
 export default reducer;
 
-function errorHandle(state, action) {
-  return updateObject(state, {
-    error: null,
-  });
-}
-
-function messageHandle(state, action) {
-  return updateObject(state, {
-    message: null,
-  });
-}
-
-function sendSuccess(state, action) {
-  const newList = state.cardList.map((el) => {
-    if (el.id === action.cardId) {
-      el.type = true;
-      return el;
-    }
-    return el;
-  });
-  return updateObject(state, {
-    cardList: newList,
-    loaded: true,
-    loading: false,
-    error: null,
-    message: action.message,
-  });
-}
-
-function selectContactSuccess(state, action) {
-  return updateObject(state, {
-    selectedContact: action.contactEmail,
-  });
-}
-
-function selectContactFail(state, action) {
-  return updateObject(state, {
-    selectedContact: null,
-  });
-}
-
 function fetchStart(state, action) {
   return updateObject(state, {
     loading: true,
@@ -93,8 +52,11 @@ function fetchStart(state, action) {
 }
 
 function fetchSuccess(state, action) {
+  let newList = action.isReload
+    ? action.cardList
+    : state.cardList.concat(action.cardList);
   return updateObject(state, {
-    cardList: action.cardList,
+    cardList: newList,
     loaded: true,
     error: null,
     loading: false,
@@ -124,15 +86,15 @@ function changeFail(state, action) {
 }
 
 function addSuccess(state, action) {
-  const newList = state.cardList.concat(action.card);
-  console.log("new card", action.card, "new list", newList)
+  const newList = action.cardList;
+
   return updateObject(state, {
     cardList: newList,
-    message: action.message,
     loaded: true,
     loading: false,
     error: null,
     selectedContact: null,
+    message: action.message,
   });
 }
 
@@ -144,5 +106,41 @@ function deleteSuccess(state, action) {
     loading: false,
     error: null,
     message: action.message,
+  });
+}
+
+function selectContactSuccess(state, action) {
+  return updateObject(state, {
+    selectedContact: action.contactEmail,
+  });
+}
+
+function selectContactFail(state, action) {
+  return updateObject(state, {
+    selectedContact: null,
+  });
+}
+
+function sendSuccess(state, action) {
+  const newList = action.cardList;
+
+  return updateObject(state, {
+    cardList: newList,
+    loaded: true,
+    loading: false,
+    error: null,
+    message: action.message,
+  });
+}
+
+function errorHandle(state, action) {
+  return updateObject(state, {
+    error: null,
+  });
+}
+
+function messageHandle(state, action) {
+  return updateObject(state, {
+    message: null,
   });
 }

@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 const ContactBook = (props) => {
   return props.data.map((opt) => (
     <Form.Check
-    key={opt.id}
+      key={opt.id}
       name="contact"
       type="radio"
       id={opt.id}

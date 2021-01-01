@@ -12,6 +12,7 @@ const BACK = "BACK";
 
 const Card = (props) => {
   const [active, setActive] = useState(IMAGE);
+
   const imgElement = (
     <img
       className={classes.CardImage}
@@ -19,6 +20,7 @@ const Card = (props) => {
       alt="card"
     />
   );
+
   const cardElement = (
     <Container className={classes.CardContainer}>
       <Row className={classes.CardContainer__Row}>
@@ -29,8 +31,8 @@ const Card = (props) => {
         </Col>
         <Col lg={3} md={2} sm={4}>
           <img
-          className={classes.StampImg}
-            src={process.env.REACT_APP_BACKEND_URL + "/" + props.back.stamp}
+            className={classes.StampImg}
+            src={`${process.env.REACT_APP_BACKEND_URL}/${props.back.stamp}`}
             alt="stamp"
           />
         </Col>
@@ -38,7 +40,7 @@ const Card = (props) => {
     </Container>
   );
 
-  const flipHandler = (event) => {
+  const flipHandler = () => {
     setActive((prev) => {
       if (prev === IMAGE) return BACK;
       else if (prev === BACK) return IMAGE;
@@ -48,7 +50,11 @@ const Card = (props) => {
   return (
     <React.Fragment>
       {active === IMAGE ? imgElement : cardElement}
-      <Button className={classes.CardButton} onClick={flipHandler}>
+      <Button
+        variant="warning"
+        onClick={flipHandler}
+        style={{ marginTop: "1.5rem" }}
+      >
         Flip
       </Button>
     </React.Fragment>

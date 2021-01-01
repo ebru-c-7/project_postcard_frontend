@@ -23,15 +23,20 @@ const TableItem = (props) => {
       </tbody>
     </Table>
   );
+
   const styleDiv = {
     margin: "1.8rem",
     display: "flex",
-    justifyContent: "space-evenly"
+    justifyContent: "center",
   };
 
   const emptyTable = (
     <div style={styleDiv}>
-      <img src={logo} alt="contact-book" style={{width: "3rem"}} />
+      <img
+        src={logo}
+        alt="contact-book"
+        style={{ width: "3rem", marginRight: "1rem" }}
+      />
       <p>No contacts are found! Let's add some!</p>
     </div>
   );

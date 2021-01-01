@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import * as actions from "../actions/actionTypes";
 import { updateObject } from "../actions/Utility";
 
@@ -19,20 +18,14 @@ const reducer = (state = initialState, action) => {
       return authFail(state, action);
     case actions.AUTH_LOGOUT:
       return authLogout(state, action);
-      case actions.ERROR_HANDLE:
-        return errorHandle(state, action);
+    case actions.ERROR_HANDLE:
+      return errorHandle(state, action);
     default:
       return state;
-  } 
+  }
 };
 
 export default reducer;
-
-function errorHandle(state, action) {
-  return updateObject(state, {
-    error: null,
-  });
-}
 
 function authStart(state, action) {
   return updateObject(state, {
@@ -42,13 +35,12 @@ function authStart(state, action) {
 }
 
 function authSuccess(state, action) {
-  console.log("authsuccess");
-  console.log("username: ", action.username);
+  let { token, username } = action;
   return updateObject(state, {
     error: null,
     loading: false,
-    token: action.token,
-    username: action.username,
+    token,
+    username,
   });
 }
 
@@ -63,6 +55,12 @@ function authLogout(state, action) {
   return updateObject(state, {
     token: null,
     username: null,
-    loading: false
+    loading: false,
+  });
+}
+
+function errorHandle(state, action) {
+  return updateObject(state, {
+    error: null,
   });
 }

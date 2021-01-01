@@ -6,13 +6,9 @@ import { ReactComponent as DeleteLogo } from "../../assets/icons/trash-alt-solid
 import "../../assets/style/Contact.css";
 
 const RowItem = (props) => {
-  const editHandler = (id) => {
-    props.actions.editHandler(id);
-  };
+  const editHandler = (id) => props.actions.editHandler(id);
 
-  const deleteHandler = (id) => {
-    props.actions.deleteHandler(id);
-  };
+  const deleteHandler = (id) => props.actions.deleteHandler(id)
 
   return props.rows.map((r, i) => (
     <tr key={i}>
@@ -21,15 +17,12 @@ const RowItem = (props) => {
       <td>{r.email}</td>
       <td>{r.note}</td>
       <td>
-        <EditLogo
-          className="logo-svg"
-          onClick={editHandler.bind(this, r.id)}
-        /> 
+        <EditLogo className="logo-svg" onClick={editHandler.bind(this, r.id)} />
       </td>
       <td>
         <DeleteLogo
           className="logo-svg"
-          onClick={deleteHandler.bind(this,r.id)}
+          onClick={deleteHandler.bind(this, r.id)}
         />
       </td>
     </tr>

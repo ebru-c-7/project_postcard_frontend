@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import * as actions from "../actions/actionTypes";
 import { updateObject } from "../actions/Utility";
 
@@ -41,18 +40,6 @@ const reducer = (state = initialState, action) => {
 };
 
 export default reducer;
-
-function errorHandle(state, action) {
-  return updateObject(state, {
-    error: null,
-  });
-}
-
-function messageHandle(state, action) {
-  return updateObject(state, {
-    message: null,
-  });
-}
 
 function fetchStart(state, action) {
   return updateObject(state, {
@@ -136,5 +123,17 @@ function editSuccess(state, action) {
     selectedContact: null,
     loading: false,
     error: null,
+  });
+}
+
+function errorHandle(state, action) {
+  return updateObject(state, {
+    error: null,
+  });
+}
+
+function messageHandle(state, action) {
+  return updateObject(state, {
+    message: null,
   });
 }

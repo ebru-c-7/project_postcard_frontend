@@ -5,9 +5,10 @@ const fetchStart = () => ({ type: actions.FETCH_CARDS_START });
 
 const fetchFail = (error) => ({ type: actions.FETCH_CARDS_FAIL, error });
 
-const fetchSuccess = (cardList) => ({
+const fetchSuccess = (cardList, isReload) => ({
   type: actions.FETCH_CARDS_SUCCESS,
   cardList,
+  isReload,
 });
 
 const changeInit = () => ({ type: actions.CARD_LIST_CHANGE_INIT });
@@ -17,10 +18,10 @@ export const changeFailCard = (error) => ({
   error: error || null,
 });
 
-const addSuccess = (card, message) => ({
+const addSuccess = (message, cardList) => ({
   type: actions.ADD_CARD_SUCCESS,
-  card,
-  message 
+  message,
+  cardList
 });
 
 const deleteSuccess = (cardId, message) => ({
@@ -29,10 +30,11 @@ const deleteSuccess = (cardId, message) => ({
   message,
 });
 
-const sendSuccess = (cardId, message) => ({
+const sendSuccess = (cardId, message, cardList) => ({
   type: actions.SEND_CARD_SUCCESS,
   cardId,
   message,
+  cardList,
 });
 
 export const selectCardContact = (contactEmail) => ({
@@ -44,22 +46,27 @@ export const cancelSelectCardContact = () => ({
   type: actions.CANCEL_SELECT_CARD_CONTACT,
 });
 
-export const fetchCards = (token) => {
-  console.log("actions fetchcard", token);
+export const fetchCards = (token, isReload, length, type) => {
   return (dispatch) => {
     dispatch(fetchStart());
     const url = `${process.env.REACT_APP_BACKEND_URL}/card/cards`;
     const headers = { Authorization: "Bearer " + token };
+    const itemQ = length !== undefined ? `?length=${length}` : `?length=0`;
+    const typeQ = type !== undefined ? `&type=${type}` : `&type=all`;
 
     axios
-      .get(url, { headers }) //check the headers
+      .get(url + itemQ + typeQ, { headers })
       .then((response) => {
-        console.log(response);
         let cards = response.data.cards;
-        dispatch(fetchSuccess(cards));
+        dispatch(fetchSuccess(cards, isReload));
       })
       .catch((error) => {
-        dispatch(fetchFail(error.response.data.message));
+        dispatch(
+          fetchFail(
+            error.response.data.message ||
+              "Something went wrong:( Please refresh the page!"
+          )
+        );
       });
   };
 };
@@ -72,9 +79,8 @@ export const addCard = (token, card) => {
     for (let key in card) {
       formData.append(key, card[key]);
     }
-    const body = formData; //image, begin,body,end, type, contactEmail
+    const body = formData; //image, begin, body, end, type, contactEmail
 
-    console.log(formData);
     axios
       .post(url, body, {
         headers: {
@@ -82,13 +88,16 @@ export const addCard = (token, card) => {
         },
       })
       .then((response) => {
-        console.log(response);
-        const card = response.data.card;
-        const message = response.data.message;
-        dispatch(addSuccess(card, message));
+        let {message, cards} = response.data;
+        dispatch(addSuccess(message, cards));
       })
       .catch((error) => {
-        dispatch(changeFailCard(error.response.data.message));
+        dispatch(
+          changeFailCard(
+            error.response.data.message ||
+              "Something went wrong:( Please refresh the page!"
+          )
+        );
       });
   };
 };
@@ -103,12 +112,16 @@ export const deleteCard = (token, cardId) => {
     axios
       .delete(url + params, { headers })
       .then((response) => {
-        console.log(response);
         const message = response.data.message;
         dispatch(deleteSuccess(cardId, message));
       })
       .catch((error) => {
-        dispatch(changeFailCard(error.response.data.message));
+        dispatch(
+          changeFailCard(
+            error.response.data.message ||
+              "Something went wrong:( Please refresh the page!"
+          )
+        );
       });
   };
 };
@@ -123,12 +136,16 @@ export const sendSavedCard = (token, cardId) => {
     axios
       .patch(url + params, {}, { headers })
       .then((response) => {
-        console.log(response);
-        const message = response.data.message;
-        dispatch(sendSuccess(cardId, message));
+        let { message, cards } = response.data;
+        dispatch(sendSuccess(cardId, message, cards));
       })
       .catch((error) => {
-        dispatch(changeFailCard(error.response.data.message));
+        dispatch(
+          changeFailCard(
+            error.response.data.message ||
+              "Something went wrong:( Please refresh the page!"
+          )
+        );
       });
   };
 };
@@ -136,4 +153,3 @@ export const sendSavedCard = (token, cardId) => {
 export const errorHandleCard = () => ({ type: actions.ERROR_HANDLE });
 
 export const messageHandleCard = () => ({ type: actions.MESSAGE_HANDLE });
-

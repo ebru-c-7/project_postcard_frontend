@@ -43,13 +43,6 @@ class Contact extends PureComponent {
         feedback: "",
       },
     ],
-    contacts: [
-      {
-        name: "Contact Name",
-        email: "Contact E-Mail",
-        note: "Any note on contact",
-      },
-    ],
     showEditModal: false,
   };
 
@@ -59,10 +52,7 @@ class Contact extends PureComponent {
     }
   }
 
-  showEditModalHandler = () => {
-    console.log("showedit");
-    this.setState({ showEditModal: true });
-  };
+  showEditModalHandler = () => this.setState({ showEditModal: true });
 
   closeEditModalHandler = () => {
     this.setState({ showEditModal: false });
@@ -70,21 +60,15 @@ class Contact extends PureComponent {
   };
 
   deleteContactHandler = (contactId) => {
-    console.log("delete for ", contactId);
-    console.log(this.props.token);
     this.props.onDeleteContact(this.props.token, contactId);
   };
 
   editContactHandler = (contactId) => {
-    console.log("editcontacthandler");
     this.props.onFetchContact(this.props.token, contactId);
     this.showEditModalHandler();
   };
 
   render() {
-    // if(!this.props.isLogged) {
-    //   this.props.history.push("/");
-    // }
     let first = (
       <FormItem
         logo={bookImg}
@@ -96,9 +80,7 @@ class Contact extends PureComponent {
 
     let second = (
       <TableItem
-        contacts={
-          this.props.IsLoaded ? this.props.contactList : this.state.contacts
-        }
+        contacts={this.props.IsLoaded ? this.props.contactList : []}
         methods={{
           deleteHandler: this.deleteContactHandler,
           editHandler: this.editContactHandler,
@@ -123,7 +105,7 @@ class Contact extends PureComponent {
           errorMessage={this.props.error}
         />
         <MessageBox
-          show={this.props.message}
+          show={!!this.props.message}
           onHide={this.props.onMessageHandle}
           message={this.props.message}
         />
@@ -165,16 +147,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onErrorHandle: () => dispatch(actions.errorHandleContact()),
     onFetchContacts: (token) => dispatch(actions.fetchContacts(token)),
     onFetchContact: (token, contactId) =>
-      dispatch(actions.fetchContact(token, contactId)),
-    onAddContact: (token, contact) =>
-      dispatch(actions.addContact(token, contact)),
+    dispatch(actions.fetchContact(token, contactId)),
     onDeleteContact: (token, contactId) =>
       dispatch(actions.deleteContact(token, contactId)),
-    onEditCancel: () => dispatch(actions.changeFail()),
+    onErrorHandle: () => dispatch(actions.errorHandleContact()),
     onMessageHandle: () => dispatch(actions.messageHandleContact()),
+    onEditCancel: () => dispatch(actions.changeFail()),
   };
 };
 

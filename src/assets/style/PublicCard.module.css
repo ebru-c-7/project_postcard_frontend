@@ -10,7 +10,7 @@
     margin-top: 2rem;
 }
 
-.CardButton {
+/* .CardButton {
     margin: 12px;
     border-radius: 50%;
     width: 60px;
@@ -34,7 +34,7 @@
     background-color: #633e32 !important;
     border: 2px solid black !important;
     box-shadow: none !important;
-}
+} */
 
 .CardContainer {
     min-height: 50vh;
@@ -66,10 +66,3 @@
     max-width: 6rem;
     margin: 2rem;
 }
-
-/* @media (max-width: 750px ) {
-    .CardContainer__Row {
-        flex-direction: column;
-        width: 100%;
-    }
-} */

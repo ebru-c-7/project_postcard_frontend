@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { Component, Suspense, lazy } from "react";
 import { Route, Switch, withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
@@ -20,6 +19,7 @@ class App extends Component {
   componentDidMount() {
     this.props.onAutoLogin();
   }
+  
   render() {
     let routes = (
       <Switch>
@@ -38,7 +38,7 @@ class App extends Component {
           render={(props) => <Card {...props} isLogged={!!this.props.token} />}
         />
         <Route path="/" exact>
-          <Home />
+          <Home isLoading={this.props.isLoading} />
         </Route>
         <Redirect to="/" />
       </Switch>

@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 
 const ButtonGroup = (props) => {
-    const SIGN_UP = "SIGN_UP";
+  const SIGN_UP = "SIGN_UP";
 
   return (
     <div className="button-container">

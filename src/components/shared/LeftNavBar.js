@@ -12,12 +12,12 @@ const LeftNavBar = (props) => {
   return (
     <Tab.Container id="left-tabs" defaultActiveKey={props.defaultTab}>
       <Row style={{margin: "0px"}}>
-        <Col sm={3}>
+        <Col sm={3} lg={3}>
           <Nav variant="pills" className="flex-column">
             <NavItems items={props.titles} />
           </Nav>
         </Col>
-        <Col sm={8}>
+        <Col sm={8} lg={7}>
           <Tab.Content>
             <TabItems titles={props.titles} tabItems={props.tabs} />
           </Tab.Content>

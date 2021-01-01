@@ -1,10 +1,16 @@
-export { autoLogin, signup, login, logout, errorHandleAuth } from "./auth.js";
+export { 
+  logout,
+  login, 
+  signup,
+  autoLogin, 
+  errorHandleAuth 
+} from "./auth.js";
 
 export {
   fetchContacts,
+  fetchContact,
   addContact,
   deleteContact,
-  fetchContact,
   editContact,
   changeFail,
   errorHandleContact,

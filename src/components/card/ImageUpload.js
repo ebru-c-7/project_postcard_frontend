@@ -10,6 +10,7 @@ const ImageUpload = (props) => {
   const [error, setError] = useState(false);
 
   const fileTypes = ["image/png", "image/jpeg", "image/jpg"];
+
   useEffect(() => {
     if (!props.value) {
       setPreviewUrl(null);
@@ -42,13 +43,12 @@ const ImageUpload = (props) => {
       setIsValid(false);
       fileIsValid = false;
     }
+
     if (fileIsValid) {
       setError(null);
-      //send picked file
       props.fileHandler(pickedFile);
     } else {
-      setError("Please upload an inage file (png, jpg or jpeg)");
-      console.log("file is not valid");
+      setError("Please upload an image file (png, jpg or jpeg)");
     }
   };
 
